@@ -1,9 +1,4 @@
 ﻿using ConsoleApp1;
-
-
-
-
-
 /*
  *  IsAlive     Thread'in çalışma durumunu verir.
  *  Name        Thread'in adını atar ya da verir.
@@ -14,21 +9,53 @@
  *  Suspend     Thread'i geçici süre durdurur.
  */
 
+// Background Thread (Arka plan thread'i arka planda çalışır main thread sona erdiğinde background thread'lerde sona erer.
+// Thread myThread = new Thread(CalisacakMetod);
+// myThread.IsBackground = true;
+// şeklinde background thread'i olarak ayarlanır.
 
 
-Console.WriteLine("Main thread starting.");
-
-IsParcacigi isci = new IsParcacigi("Child 1");
-Thread newThrd = new Thread(isci.Run);
-newThrd.Start();
-
-do
+internal class Program
 {
-    Console.Write(".");
-    Thread.Sleep(100);
+    private static void Main(string[] args)
+    {
+        Console.WriteLine("Main thread starting.");
 
-}while (isci.Count != 10);
+        //IsParcacigi isci = new IsParcacigi("Child 1");
+        //Thread newThrd = new Thread(isci.Run);
 
-Console.WriteLine("Main thread ending.");
+        Thread backGroundThread = new Thread(CalisacakMetod);
+        backGroundThread.IsBackground = true;
 
-Console.ReadLine();
+
+        //newThrd.Start();
+        backGroundThread.Start();
+
+
+        for(int i = 0; i < 10; i++)
+        {
+            Console.WriteLine("Main thread "+i);
+            Thread.Sleep(50);
+        }
+
+        //do
+        //{
+        //    Console.Write(".");
+        //    Thread.Sleep(100);
+
+        //} while (isci.Count != 10);
+
+        Console.WriteLine("Main thread ending.");
+    }
+
+    static void CalisacakMetod()
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            Console.WriteLine("İşlem : "+i);
+            Thread.Sleep(100);
+        }
+        Console.WriteLine("CalisacakMetod() thread'i sona erdi");
+
+    }
+}
