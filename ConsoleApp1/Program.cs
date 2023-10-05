@@ -27,6 +27,11 @@ internal class Program
         Thread backGroundThread = new Thread(CalisacakMetod);
         backGroundThread.IsBackground = true;
 
+        AddParams ap = new AddParams(20, 10);
+        Thread threadWithParameters = new Thread(new ParameterizedThreadStart(Add));
+        threadWithParameters.Start(ap);
+
+
 
         //newThrd.Start();
         backGroundThread.Start();
@@ -48,6 +53,16 @@ internal class Program
         Console.WriteLine("Main thread ending.");
     }
 
+    static void Add(object data)
+    {
+        if(data is AddParams)
+        {
+            Console.WriteLine("Id of thread in main(): {0}", Thread.CurrentThread.ManagedThreadId);
+            AddParams ap = (AddParams)data;
+            Console.WriteLine("{0} + {1} = {2}", ap.a, ap.b, ap.a + ap.b);
+        }
+    }
+
     static void CalisacakMetod()
     {
         for (int i = 0; i < 10; i++)
@@ -57,5 +72,17 @@ internal class Program
         }
         Console.WriteLine("CalisacakMetod() thread'i sona erdi");
 
+    }
+}
+
+class AddParams
+{
+    public int a;
+    public int b;
+
+    public AddParams(int a, int b)
+    {
+        this.a = a;
+        this.b = b;
     }
 }
